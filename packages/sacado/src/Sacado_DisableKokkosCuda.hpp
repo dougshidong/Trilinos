@@ -27,8 +27,8 @@
 // ***********************************************************************
 // @HEADER
 
-#ifndef SACADO_NO_KOKKOS_HPP
-#define SACADO_NO_KOKKOS_HPP
+#ifndef SACADO_DISABLE_KOKKOS_CUDA_HPP
+#define SACADO_DISABLE_KOKKOS_CUDA_HPP
 
 //
 // Include this file in any translation unit to disable the use of Sacado
