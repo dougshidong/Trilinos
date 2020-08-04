@@ -390,7 +390,9 @@ namespace Sacado {
 #endif
 #endif
         }
+#if defined(HAVE_SACADO_KOKKOSCORE) && defined(SACADO_KOKKOS_USE_MEMORY_POOL)
         m = warpBcast(m,0,blockDim.x);
+#endif
       }
       else {
         if (sz > 0) {
@@ -542,7 +544,11 @@ namespace Sacado {
       if (blockDim.x == 32) {
         // const int total_sz = warpReduce(sz);
         // const int lane = warpLane();
+#if defined(HAVE_SACADO_KOKKOSCORE) && defined(SACADO_KOKKOS_USE_MEMORY_POOL)
         const int total_sz = warpReduce(sz, blockDim.x);
+#else
+        const int total_sz = sz;
+#endif
         const int lane = threadIdx.x;
         if (total_sz > 0 && lane == 0) {
 #if defined(HAVE_SACADO_KOKKOSCORE) && defined(SACADO_KOKKOS_USE_MEMORY_POOL)
@@ -557,8 +563,10 @@ namespace Sacado {
 #endif
 #endif
         }
+#if defined(HAVE_SACADO_KOKKOSCORE) && defined(SACADO_KOKKOS_USE_MEMORY_POOL)
         m = warpBcast(m,0,blockDim.x);
         m += lane;
+#endif
       }
       else {
         if (sz > 0) {
@@ -579,7 +587,11 @@ namespace Sacado {
       if (blockDim.x == 32) {
         // const int total_sz = warpReduce(sz);
         // const int lane = warpLane();
+#if defined(HAVE_SACADO_KOKKOSCORE) && defined(SACADO_KOKKOS_USE_MEMORY_POOL)
         const int total_sz = warpReduce(sz, blockDim.x);
+#else
+        const int total_sz = sz;
+#endif
         const int lane = threadIdx.x;
         if (total_sz > 0 && lane == 0) {
 #if defined(HAVE_SACADO_KOKKOSCORE) && defined(SACADO_KOKKOS_USE_MEMORY_POOL)
