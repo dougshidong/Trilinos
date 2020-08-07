@@ -154,20 +154,16 @@ namespace Sacado {
     // Reduce y across the warp and broadcast to all lanes
     template <typename T>
      __device__ inline T warpReduce(T y, const int warp_size = 32) {
-#if defined(HAVE_SACADO_KOKKOS)
       for (int i=1; i<warp_size; i*=2) {
         y += Kokkos::shfl_down(y, i, warp_size);
       }
       y = Kokkos::shfl(y, 0, warp_size);
-#endif
-      // TODO introduce Sacado::abort if Kokkos not enabled?
       return y;
     }
 
     // Non-inclusive plus-scan up the warp, replacing the first entry with 0
     template <typename T>
     __device__ inline int warpScan(T y, const int warp_size = 32) {
-#if defined(HAVE_SACADO_KOKKOS)
       const int lane = warpLane();
       y = Kokkos::shfl_up(y, 1, warp_size);
       if (lane == 0)
@@ -177,19 +173,12 @@ namespace Sacado {
         if (lane > i)
           y += t;
       }
-#endif
-      // TODO introduce Sacado::abort if Kokkos not enabled?
       return y;
     }
 
     template <typename T>
     __device__ inline T warpBcast(T y, int id, const int warp_size = 32) {
-#if defined(HAVE_SACADO_KOKKOS)
       return Kokkos::shfl(y, id, warp_size);
-#else
-      // TODO introduce Sacado::abort if Kokkos not enabled?
-      return y;
-#endif
     }
 
   }
